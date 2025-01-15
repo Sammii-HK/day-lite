@@ -6,16 +6,12 @@ import './App.css'
 import { Observer, SearchRiseSet, Body } from 'astronomy-engine';
 import dayjs from 'dayjs';
 import mapboxgl from 'mapbox-gl'
-import tzlookup from 'tz-lookup';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 
 function App() {
+  const mapRef = useRef<mapboxgl.Map>()
+  const mapContainerRef = useRef<HTMLDivElement | null>(null)
 
-  const mapRef = useRef()
-  const mapContainerRef = useRef()
-
-  // const day = dayjs().add(7, 'day').toDate();
   dayjs.extend(utc);
   const day = dayjs().toDate();
 
@@ -54,19 +50,10 @@ function App() {
   const sunriseTime = dayjs(sunrise?.date).utcOffset(currentUtcOffset).format('HH:mm');
   const sunsetTime = dayjs(sunset?.date).utcOffset(currentUtcOffset).format('HH:mm');
   
-
-  // console.log("observerLocation", observerLocation);
-  
-  
-  // console.log("sunrise", dayjs(sunrise?.date).format('HH:mm'));
-  // console.log("sunset", dayjs(sunset?.date).format('HH:mm'));
-
-  // console.log("daylightTime", daylightTime);
-  
   useEffect(() => {    
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY;
     mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
+      container: mapContainerRef.current || 'map-container',
     });
     
     mapRef.current.on('mousemove', (e) => {
@@ -75,7 +62,9 @@ function App() {
     })
     
     return () => {
-      mapRef.current.remove()
+      if (mapRef.current) {
+        mapRef.current.remove()
+      }
     }
   }, [])
 
