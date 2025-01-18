@@ -72,11 +72,11 @@ function App() {
 
   return (
     <>
-      <div>{isInPast ? "🌘" : "🌤️"}</div>
-      <div>Sunrise: {sunriseTime}</div>
-      <div>Sunset: {sunsetTime}</div>
-      <div>Daylight: {daylightTime}</div>
-      <div>UTC Offset: {calculateUtcOffset(observerLocation.long)}</div>
+        <h1 id='title' className='sm mt-0'>Day Lite</h1>
+      <div id="info-container">
+        <h2>Daylight hours: {daylightTime}</h2>
+        <div>{isInPast ? "🌘" : "🌤️"} Sunrise: {sunriseTime} Sunset: {sunsetTime}</div>
+      </div>
       <div id='map-container' ref={mapContainerRef}/>
     </>
   )
