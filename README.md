@@ -22,6 +22,8 @@
 
 This app is a purely front-end application which utilises two packages: `astronomy-engine` & `mapbox` to create an interactive globe which calculates the daylight hours of a specific location determined by cursor location on the map. I also used `dayjs` to work out differences between sunrise and sunset time and to format UTC time.
 
+![main view](./public/day-lite.png)
+
 ##### Noteworthy Items
 
 To calculate a rough approximate for the UTC offset based on longitude I created a simple function. UTC offset can be loosely calculated by dividing the longitude by 15. This is because the Earth is divided into 24 time zones, each approximately 15 degrees of longitude apart.
@@ -38,9 +40,11 @@ function calculateUtcOffset(longitude: number) {
 
 The app has a streamlined UX, relying on the map functionality to be intuitive. The user can freely rotate the globe and to find information about a desired location the cursor is used.
 
+![main view](./public/day-lite-close-up.png)
+
 ### Challenges & Achievements
 
-Time.
+Calculating the UTC offset with longitude to convert UTC time to local time
 
 ## Future Enhancements
 
