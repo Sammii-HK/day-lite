@@ -26,6 +26,7 @@ export default function App() {
   const isSelectedToday = date===localDate(now,zone);
   const above = day?.intervals.some(i=>now>=i.start&&now<i.end);
   const events = (values:Date[])=>values.length?values.map(value=>clockTime(value,zone)).join(', '):'No event this date';
+  const StatusIcon = day?.condition==='continuous-daylight' ? Sun : day?.condition==='continuous-night' ? Moon : !day || day.condition==='unavailable' || !isSelectedToday ? CalendarDays : above ? Sun : Moon;
   const condition = day?.condition==='continuous-daylight'?'Continuous daylight':day?.condition==='continuous-night'?'No sunrise this date':day?.condition==='unavailable'?'Solar events unavailable':isSelectedToday?(above?'Daylight now':'Between sunset and sunrise'):'Selected local date';
   return <div className="app-shell">
     <header className="masthead"><a href="#main" className="wordmark"><Sun size={23} aria-hidden="true" />Day Lite<span> / a daylight explorer</span></a><span className="local-badge">No location permission needed</span></header>
@@ -34,7 +35,7 @@ export default function App() {
       <div className="workspace">
         <section className="results" aria-labelledby="daylight-heading">
           <div className="panel-heading"><h2 id="daylight-heading">The shape of your day</h2><span>{isSelectedToday?'Today':'Selected date'}</span></div>
-          <div className="duration"><span>Daylight</span><strong>{duration(day?.daylightMinutes??null)}</strong><p className="solar-status" role="status">{above&&isSelectedToday?<Sun size={17} aria-hidden="true" />:<Moon size={17} aria-hidden="true" />}{condition}</p></div>
+          <div className="duration"><span>Daylight</span><strong>{duration(day?.daylightMinutes??null)}</strong><p className="solar-status" role="status"><StatusIcon size={17} aria-hidden="true" />{condition}</p></div>
           {result.error&&<p role="alert" className="form-error">{result.error}</p>}
           {day&&<>
             <div className="event-pair"><div><Sunrise size={22} aria-hidden="true" /><span>Sunrise</span><strong>{events(day.rises)}</strong></div><div><Sunset size={22} aria-hidden="true" /><span>Sunset</span><strong>{events(day.sets)}</strong></div></div>

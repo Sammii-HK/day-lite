@@ -42,6 +42,7 @@ describe('actual local interface',()=>{
     fireEvent.click(screen.getByRole('button',{name:'Tromsø'}));
     fireEvent.change(screen.getByLabelText('Local date'),{target:{value:'2026-06-21'}});
     expect(screen.getByText('Continuous daylight')).toBeTruthy();expect(screen.getByText('24h 00m')).toBeTruthy();
+    expect(screen.getByText('Continuous daylight').querySelector('svg')?.classList.contains('lucide-sun')).toBe(true);
     fireEvent.change(screen.getByLabelText('Local date'),{target:{value:'2026-12-21'}});
     expect(screen.getByText('No sunrise this date')).toBeTruthy();expect(screen.getByText('0h 00m')).toBeTruthy();
     fireEvent.click(screen.getByRole('button',{name:'Today'}));

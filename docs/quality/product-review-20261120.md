@@ -29,3 +29,21 @@ The baseline had no test runner. The initial new Vitest3 candidate exposed an ad
 Configured Mapbox rendering, physical touch/virtual keyboards, all browsers/assistive technologies, terrain/weather effects and every possible political time-zone boundary remain unverified. No private notes/calendar, geolocation permission, actual location, provider/model, email, database or release action was accessed.
 
 Primary model reference: [Astronomy Engine JavaScript API](https://github.com/cosinekitty/astronomy/blob/master/source/js/README.md). Rise/set uses the Sun's visible limb and the library's refraction model; real atmospheric conditions are outside this model. The coordinate time-zone lookup is bundled local data, not a live location service.
+
+## Actual offline browser receipt
+
+Chrome desktop 1144px and temporary phone 390 by 844px were checked against the compiled actual client, with no map action. Invalid latitude `999` submitted through Enter announced an error and retained Greenwich results. Native Enter on Tokyo changed its civil Today to 21 November while London was still on 20 November. Manual Sydney coordinates plus Enter changed the zone, hemisphere notation and calculated result; Today restored its current civil date.
+
+Native date-field month keys selected Tromsø on 20 December (zero daylight, missing rise/set labels) and 20 June (continuous 24-hour daylight, missing rise/set labels). A direct automation fill of the date field did not commit native React input, so that was not accepted as evidence; actual native keys did commit and update the calculation. At 390px, document width equalled viewport width; observed form/buttons were 44px high. Today initially measured narrower than 44px, so all buttons now also have a 44px minimum width for the final check. Physical virtual keyboards are not certified. The viewport was reset to 1144px and the browser handed back.
+
+The saved phone capture revealed a semantic icon error: a historical continuous-daylight result used the current-time Moon branch. The status icon now follows the selected condition, with a mounted regression asserting Sun for polar daylight; an ordinary historical date uses Calendar rather than implying current night. The final no-key production build was reloaded and the polar-day result was verified with the actual Lucide Sun class, then all three captures were refreshed. The final 390px geometry check confirms all observed controls are at least 44 by 44px, including Today; document width remains 390px. The viewport was reset to 1144px and browser ownership released again.
+
+Ignored local captures are not production screenshots or a configured-map demo: desktop 1144 by 926, full polar-day phone 390 by 1684 and coordinate-entry phone 390 by 844. Solar values are calculated locally, not supplied fixtures. No geolocation prompt, tile request, permission or private data was used.
+
+
+Current final captures, ignored and local only:
+- `.codex-artifacts/day-lite-offline-desktop.jpg`: actual Greenwich results and the labelled no-map review boundary.
+- `.codex-artifacts/day-lite-offline-polar-phone.jpg`: full 390px view of Tromsø on 21 June 2026, calculated continuous daylight and missing event labels, corrected Sun icon and native date focus.
+- `.codex-artifacts/day-lite-offline-coordinates-phone.jpg`: actual negative-latitude Sydney form entry, selected preset state and offline map explanation, 390 by 844.
+
+The compatible dependency follow-up audits zero in both full and production groups; its receipt distinguishes the discarded initial test-runner candidate from the owner's original source.
