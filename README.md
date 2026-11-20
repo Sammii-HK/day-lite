@@ -1,52 +1,29 @@
 # Day Lite
 
-[Live site](https://...)
+A browser daylight explorer built with React, TypeScript, Vite, Astronomy Engine and coordinate-based civil time zones. This local candidate extends the original one-day sketch; it has not been released.
 
-## Details
+Choose latitude, longitude and a local date. The solar calculation runs on the device, with sea-level/standard-refraction rise and set estimates. It integrates daylight within the selected civil day, including daylight-saving changes, repeated midnight and polar day/night. Missing events stay missing rather than becoming the current time. These are model estimates, not weather/terrain observations.
 
-### Time Frame
+The local clock refreshes independently of map movement. Coordinate controls and public example places work with a keyboard and without a map or geolocation permission. An optional Mapbox map is loaded only by an explicit action when configured; clicking selects coordinates. Its loading/error path preserves the calculator and cleans up map resources. No custom terminator, weather service or live location tracking is implemented.
 
-1 day
+## Checks
 
-### Technologies
-
-- React
-- Vite
-- Typescript
-- Mapbox
-- Astronomy Engine (npm package)
-
-### App Overview
-
-#### Development Process
-
-This app is a purely front-end application which utilises two packages: `astronomy-engine` & `mapbox` to create an interactive globe which calculates the daylight hours of a specific location determined by cursor location on the map. I also used `dayjs` to work out differences between sunrise and sunset time and to format UTC time.
-
-![main view](./public/day-lite.png)
-
-##### Noteworthy Items
-
-To calculate a rough approximate for the UTC offset based on longitude I created a simple function. UTC offset can be loosely calculated by dividing the longitude by 15. This is because the Earth is divided into 24 time zones, each approximately 15 degrees of longitude apart.
-
-```JS
-function calculateUtcOffset(longitude: number) {
-  const offset = Math.round(longitude / 15);
-
-  return Math.max(-12, Math.min(14, offset));
-}
+```sh
+yarn install --ignore-scripts --frozen-lockfile
+yarn lint
+yarn test
+yarn build
 ```
 
-#### Functionality
+Normal lint and build include the canonical Lucide source gate; normal test includes all 11 shared icon regressions and the actual solar/UI tests. Typed degree notation, chart intervals and numeric data remain domain content. UI icons use Lucide.
 
-The app has a streamlined UX, relying on the map functionality to be intuitive. The user can freely rotate the globe and to find information about a desired location the cursor is used.
+For the labelled offline local review, build with an explicitly empty map token and run the static-only server:
 
-![main view](./public/day-lite-close-up.png)
+```sh
+VITE_MAPBOX_KEY= yarn build
+node scripts/review.mjs
+```
 
-### Challenges & Achievements
+It serves compiled assets on 127.0.0.1:4838 with `connect-src 'none'`, no APIs and no runtime/private data. Map contracts are tested with injected mocks. No configured Mapbox, real geolocation, map permission, provider or external data transmission is claimed by this review.
 
-Calculating the UTC offset with longitude to convert UTC time to local time
-
-## Future Enhancements
-
-- Ability to change the date to retrieve data for.
-- Dynamically change the mapbox globe colour style dependant on active location current local time.
+The original screenshots in `public/` remain historical assets. Current evidence and limitations are in `docs/quality/product-review-20261120.md`.
