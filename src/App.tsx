@@ -27,7 +27,7 @@ export default function App() {
   const above = day?.intervals.some(i=>now>=i.start&&now<i.end);
   const events = (values:Date[])=>values.length?values.map(value=>clockTime(value,zone)).join(', '):'No event this date';
   const StatusIcon = day?.condition==='continuous-daylight' ? Sun : day?.condition==='continuous-night' ? Moon : !day || day.condition==='unavailable' || !isSelectedToday ? CalendarDays : above ? Sun : Moon;
-  const condition = day?.condition==='continuous-daylight'?'Continuous daylight':day?.condition==='continuous-night'?'No sunrise this date':day?.condition==='unavailable'?'Solar events unavailable':isSelectedToday?(above?'Daylight now':'Between sunset and sunrise'):'Selected local date';
+  const condition = day?.condition==='continuous-daylight'?'Continuous daylight':day?.condition==='continuous-night'?'No sunrise this date':day?.condition==='unavailable'?'Solar events unavailable':isSelectedToday?(above?'Daylight now':'Between sunset and sunrise'):'Selected date';
   return <div className="app-shell">
     <header className="masthead"><a href="#main" className="wordmark"><Sun size={23} aria-hidden="true" />Day Lite<span> / a daylight explorer</span></a><span className="local-badge">No location permission needed</span></header>
     <main id="main">
@@ -40,13 +40,13 @@ export default function App() {
           {day&&<>
             <div className="event-pair"><div><Sunrise size={22} aria-hidden="true" /><span>Sunrise</span><strong>{events(day.rises)}</strong></div><div><Sunset size={22} aria-hidden="true" /><span>Sunset</span><strong>{events(day.sets)}</strong></div></div>
             {day.daylightMinutes!==null&&<div className="day-chart"><svg viewBox="0 0 100 7" role="img" aria-label={`Daylight during ${date}: ${duration(day.daylightMinutes)}. Gold shows sunrise-to-sunset intervals; dark shows the sun below the horizon.`}><rect width="100" height="7" rx="1" fill="var(--night)" />{day.intervals.map((i,index)=><rect key={index} x={(i.start.getTime()-day.start.getTime())/(dayLength*60000)*100} width={(i.end.getTime()-i.start.getTime())/(dayLength*60000)*100} height="7" fill="var(--sunlight)" />)}</svg><div className="chart-labels">{[0,.25,.5,.75,1].map(fraction=><span key={fraction}>{clockTime(new Date(day.start.getTime()+dayLength*60000*fraction),zone)}</span>)}</div><div className="chart-legend"><span><i className="day-key" />Sunrise to sunset</span><span><i className="night-key" />Below horizon</span></div></div>}
-            {dayLength!==1440&&<p className="calculation-note">This local date spans {duration(dayLength)} because the civil clock changes.</p>}
+            {dayLength!==1440&&<p className="calculation-note">This date lasts {duration(dayLength)} because the clocks change.</p>}
           </>}
           <div className="date-control"><label htmlFor="date"><CalendarDays size={17} aria-hidden="true" />Local date</label><div><input id="date" type="date" min="1900-01-01" max="2100-12-31" value={date} onChange={event=>setDateOverride(event.target.value)} /><button className="text-button" onClick={()=>setDateOverride('')}>Today</button></div></div>
-          <p className="calculation-note">Times follow the local civil time zone, including daylight saving. Estimates use a sea-level observer and standard refraction; terrain and weather are not modelled.</p>
+          <p className="calculation-note">Times are in the place's own time zone, daylight saving included. Sunrise and sunset are for sea level, so hills and weather can shift them.</p>
         </section>
         <div className="place-column"><MapPanel location={location} onSelect={select} token={import.meta.env.VITE_MAPBOX_KEY} />
-          <section className="location-panel" aria-labelledby="location-heading"><div className="panel-heading"><h2 id="location-heading">Choose your coordinates</h2><span>Calculated on this device</span></div><div className="presets" aria-label="Example places">{places.map(place=><button key={place.name} aria-pressed={place.latitude===location.latitude&&place.longitude===location.longitude} onClick={()=>select({latitude:place.latitude,longitude:place.longitude})}>{place.name}</button>)}</div>
+          <section className="location-panel" aria-labelledby="location-heading"><div className="panel-heading"><h2 id="location-heading">Choose your coordinates</h2><span>Worked out in your browser</span></div><div className="presets" aria-label="Example places">{places.map(place=><button key={place.name} aria-pressed={place.latitude===location.latitude&&place.longitude===location.longitude} onClick={()=>select({latitude:place.latitude,longitude:place.longitude})}>{place.name}</button>)}</div>
             <form onSubmit={event=>{event.preventDefault();try{select(parseCoordinates(latitude,longitude));}catch(cause){setError(cause instanceof Error?cause.message:'Check both coordinates.');}}} noValidate>
               <div className="coordinate-fields"><label htmlFor="latitude">Latitude <span>-90 to 90</span><input id="latitude" inputMode="decimal" value={latitude} onChange={e=>setLatitude(e.target.value)} aria-describedby={error?'location-error':undefined} /></label><label htmlFor="longitude">Longitude <span>-180 to 180</span><input id="longitude" inputMode="decimal" value={longitude} onChange={e=>setLongitude(e.target.value)} aria-describedby={error?'location-error':undefined} /></label></div>
               {error&&<p role="alert" id="location-error" className="form-error">{error}</p>}
@@ -55,7 +55,7 @@ export default function App() {
           </section>
         </div>
       </div>
-      <footer><span>Day Lite / an exploration by Sammii Kellow</span><span>Astronomy Engine estimates. Civil zones from coordinate lookup.</span></footer>
+      <footer><span>Day Lite / an exploration by Sammii Kellow</span><span>Sun times from Astronomy Engine.</span></footer>
     </main>
   </div>;
 }
